@@ -498,6 +498,8 @@ type Query {
 
 - Write the resolver templates.
 
+*Migration/Update Note* In Opensearch versions >= 1.0 you no longer need to use the path /doc. Using /doc in custom resolvers may cause issues.
+
 ```
 ## Query.nearbyTodos.req.vtl
 ## Objects of type Todo will be stored in the /todo index
@@ -540,13 +542,14 @@ type Query {
 #end
 $util.toJson({
   "items": $items,
-  "total": $ctx.result.hits.total,
+  "total": $ctx.result.hits.total.value,
   "nextToken": $nextToken
 })
 ```
 
 - Run `amplify push`
 
+*Migration/Update Note* The path for the ElasticSearch total was `ctx.result.hits.total` and in OpenSearch is now `ctx.result.hits.total.value`
 Amazon OpenSearch domains can take a while to deploy. Take this time to read up on OpenSearch to see what capabilities you are about to unlock.
 
 [Getting Started with OpenSearch](https://opensearch.org/docs/opensearch/index/)
